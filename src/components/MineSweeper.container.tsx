@@ -1,6 +1,11 @@
 import { MouseEvent, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { addMineLeft, minusMineLeft, setIsStart } from "../app/store";
+import {
+  addMineLeft,
+  AppDispatch,
+  minusMineLeft,
+  setIsStart,
+} from "../app/store";
 import { MINE } from "../data/level";
 import { createField } from "../functions/createField";
 import MineSweeperUI from "./MineSweeper.presenter";
@@ -136,6 +141,7 @@ const MineSweeper = (props: IPropsMineSweeper) => {
       }
     }
     setIsEnd("isEnd");
+    props.setIsStart(false);
 
     return nowField;
   };
@@ -188,11 +194,12 @@ const MineSweeper = (props: IPropsMineSweeper) => {
   const checkTile = (nowField: TField) => {
     let isValid = false;
     let count = 0;
-    nowField.forEach((arr) => {
-      arr.forEach((data) => {
-        if (!data.isFlag) count++;
-      });
-    });
+
+    for (let i = 0; i < nowField.length - 1; i++) {
+      for (let j = 0; j < nowField[i].length - 1; j++) {
+        if (!nowField[i][j].isOpen) count++;
+      }
+    }
 
     if (count === props.countOfMine) isValid = true;
 
@@ -271,7 +278,7 @@ const mapStateToProps = (state: TMinesweeperState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: AppDispatch) => {
   return {
     setIsStart: (isStart: boolean) => dispatch(setIsStart({ isStart })),
     addMineLeft: () => dispatch(addMineLeft()),

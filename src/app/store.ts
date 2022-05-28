@@ -28,9 +28,10 @@ const minesweeper = createSlice({
 
       return nextState;
     },
-    setCustomLevel: (_, actions) => {
-      const { col, row, countOfMine } = actions.payload;
-      const nextState = setCustomObject(col, row, countOfMine);
+    setCustomLevel: (state, actions) => {
+      const { col, row, countOfMind } = actions.payload;
+      const nextState = setCustomObject(col, row, countOfMind, state.restart);
+      console.log(nextState);
 
       return nextState;
     },

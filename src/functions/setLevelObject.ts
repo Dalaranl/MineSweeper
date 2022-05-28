@@ -69,11 +69,12 @@ const setExpert = (restart: boolean) => {
 export const setCustomObject = (
   col: number,
   row: number,
-  countOfMine: number
+  countOfMine: number,
+  restart: boolean
 ) => {
   const setting = {
     isStart: false,
-    restart: false,
+    restart: !restart,
     level: level.custom.name,
     col,
     row,
