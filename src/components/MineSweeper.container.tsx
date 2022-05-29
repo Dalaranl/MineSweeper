@@ -6,33 +6,20 @@ import {
   minusMineLeft,
   setIsStart,
 } from "../app/store";
-import { MINE } from "../data/level";
+import { MINE, SEARCH_POSITION } from "../data/level";
 import { createField } from "../functions/createField";
 import MineSweeperUI from "./MineSweeper.presenter";
 import {
   IPropsMineSweeper,
-  TClickHistory,
   TField,
   TMinesweeperState,
   TPosition,
 } from "./MineSweeper.types";
 
-const SEARCH_POSITION = [
-  { y: -1, x: -1 },
-  { y: -1, x: 0 },
-  { y: -1, x: 1 },
-  { y: 0, x: 1 },
-  { y: 0, x: -1 },
-  { y: 1, x: 1 },
-  { y: 1, x: 0 },
-  { y: 1, x: -1 },
-];
-
 const MineSweeper = (props: IPropsMineSweeper) => {
   const [field, setField] = useState<TField>([
     [{ value: "0", isOpen: false, isFlag: false }],
   ]);
-  const [clickHistory, setClickHistory] = useState<TClickHistory>();
   const [isEnd, setIsEnd] = useState<string>("");
 
   useEffect(() => {
