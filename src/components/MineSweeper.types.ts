@@ -4,11 +4,13 @@ export interface IPropsMineSweeper {
   col: number;
   row: number;
   isStart: boolean;
+  isClear: boolean;
   countOfMine: number;
   defaultField: TField;
   nowLevel: string;
   restart: boolean;
   setIsStart: (isStart: boolean) => void;
+  setIsClear: () => void;
   addMineLeft: () => void;
   minusMineLeft: () => void;
 }
@@ -16,11 +18,12 @@ export interface IPropsMineSweeper {
 export interface IPropsMineSweeperUI {
   field: TField;
   isEnd: string;
-  onClickTile: (
+  isClear: boolean;
+  onClickLeftBtnOnTile: (
     position: { xIndex: number; yIndex: number },
     isOpen: boolean
   ) => () => void;
-  onContextMenuTile: (
+  onClickRightBtnOnTile: (
     x: number,
     y: number
   ) => (e: MouseEvent<HTMLSpanElement>) => void;
@@ -37,6 +40,7 @@ export interface IPropsMSHeader {
 
 export type TMinesweeperState = {
   isStart: boolean;
+  isClear: boolean;
   restart: boolean;
   level: string;
   col: number;
@@ -50,3 +54,4 @@ export type TField = TFieldObj[][];
 export type TFieldObj = { value: string; isOpen: boolean; isFlag: boolean };
 export type TPosition = { xIndex: number; yIndex: number };
 export type TClickHistory = { y: number; x: number }[];
+export type TFlagPosition = [number, number][];

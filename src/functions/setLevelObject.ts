@@ -24,6 +24,7 @@ export const setLevelObject = (setLevel: string, restart: boolean) => {
 const setBeginner = (restart: boolean) => {
   const setting = {
     isStart: false,
+    isClear: false,
     restart: !restart,
     level: level.beginner.name,
     col: level.beginner.col,
@@ -39,6 +40,7 @@ const setBeginner = (restart: boolean) => {
 const setIntermediate = (restart: boolean) => {
   const setting = {
     isStart: false,
+    isClear: false,
     restart: !restart,
     level: level.intermediate.name,
     col: level.intermediate.col,
@@ -54,6 +56,7 @@ const setIntermediate = (restart: boolean) => {
 const setExpert = (restart: boolean) => {
   const setting = {
     isStart: false,
+    isClear: false,
     restart: !restart,
     level: level.expert.name,
     col: level.expert.col,
@@ -74,6 +77,7 @@ export const setCustomObject = (
 ) => {
   const setting = {
     isStart: false,
+    isClear: false,
     restart: !restart,
     level: level.custom.name,
     col,

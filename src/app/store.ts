@@ -12,6 +12,13 @@ const minesweeper = createSlice({
   name: "minesweeper",
   initialState: setLevelObject(level.beginner.name, false),
   reducers: {
+    setIsClear: (state) => {
+      const nextState = {
+        ...state,
+        isClear: true,
+      };
+      return nextState;
+    },
     setIsStart: (state, actions) => {
       const nextState = {
         ...state,
@@ -31,13 +38,13 @@ const minesweeper = createSlice({
     setCustomLevel: (state, actions) => {
       const { col, row, countOfMind } = actions.payload;
       const nextState = setCustomObject(col, row, countOfMind, state.restart);
-      console.log(nextState);
 
       return nextState;
     },
     reStart: (state) => {
       const nextState = {
         ...state,
+        isClear: false,
         restart: !state.restart,
         isStart: false,
         mineLeft: state.countOfMine,
@@ -68,6 +75,7 @@ const minsweeperStore = configureStore({ reducer: minesweeper.reducer });
 export const {
   setCustomLevel,
   setIsStart,
+  setIsClear,
   setLevel,
   reStart,
   addMineLeft,

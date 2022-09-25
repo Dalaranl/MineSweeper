@@ -4,6 +4,7 @@ import {
   addMineLeft,
   AppDispatch,
   minusMineLeft,
+  setIsClear,
   setIsStart,
 } from "../app/store";
 import { MINE, SEARCH_POSITION } from "../data/level";
@@ -12,6 +13,7 @@ import MineSweeperUI from "./MineSweeper.presenter";
 import {
   IPropsMineSweeper,
   TField,
+  TFlagPosition,
   TMinesweeperState,
   TPosition,
 } from "./MineSweeper.types";
@@ -21,12 +23,46 @@ const MineSweeper = (props: IPropsMineSweeper) => {
     [{ value: "0", isOpen: false, isFlag: false }],
   ]);
   const [isEnd, setIsEnd] = useState<string>("");
+  const [isClear, setIsClear] = useState(false);
+  const [flagPosition, setFlagPosition] = useState<TFlagPosition>([]);
 
   useEffect(() => {
     const newField = createField(props.col, props.row);
     setField([...newField]);
     setIsEnd("");
   }, [props.restart]);
+
+  useEffect(() => {
+    if (flagPosition.length === props.countOfMine) {
+      isClearGame();
+    }
+    console.log(field, "field");
+    console.log(
+      "flagPosition.length, props.countOfMine",
+      flagPosition,
+      props.countOfMine
+    );
+  }, [flagPosition]);
+
+  useEffect(() => {
+    setIsClear((prev) => props.isClear);
+  }, [props.isClear]);
+
+  const isClearGame = () => {
+    let count = 0;
+    console.log("now isClearGameFunc");
+    flagPosition.map((el) => {
+      if (field[el[0]][el[1]].value === MINE) count++;
+    });
+    if (count === props.countOfMine) {
+      clearGame();
+    }
+  };
+
+  const clearGame = () => {
+    props.setIsStart(false);
+    props.setIsClear();
+  };
 
   const getRandomNumber = (max: number) => {
     const number = Math.random() * max;
@@ -136,25 +172,14 @@ const MineSweeper = (props: IPropsMineSweeper) => {
   const searchCurrentTile = (y: number, x: number, newField: TField) => {
     const nowField = newField;
 
-    if (parseInt(nowField[y][x].value) > 0) {
-      nowField[y][x] = {
-        value: nowField[y][x].value,
-        isOpen: true,
-        isFlag: false,
-      };
-
-      return nowField;
-    }
-
-    if (nowField[y][x].value === MINE) {
-      const endField = endGame(nowField);
-      return endField;
-    }
-
     for (let i = 0; i < SEARCH_POSITION.length; i++) {
       const result = setPosition(y, x, i);
 
-      if (result && parseInt(nowField[result.nowY][result.nowX].value) > 0) {
+      if (result && nowField[result.nowY][result.nowX].value !== "0") {
+        if (nowField[result.nowY][result.nowX].isFlag) {
+          setFlagPosition(minusFlagPosition(result.nowY, result.nowX));
+          props.addMineLeft();
+        }
         nowField[result.nowY][result.nowX] = {
           value: nowField[result.nowY][result.nowX].value,
           isOpen: true,
@@ -165,62 +190,92 @@ const MineSweeper = (props: IPropsMineSweeper) => {
         nowField[result.nowY][result.nowX].value === "0" &&
         !nowField[result.nowY][result.nowX].isOpen
       ) {
+        if (nowField[result.nowY][result.nowX].isFlag) {
+          setFlagPosition(minusFlagPosition(result.nowY, result.nowX));
+          props.addMineLeft();
+        }
         nowField[result.nowY][result.nowX] = {
           value: nowField[result.nowY][result.nowX].value,
           isOpen: true,
           isFlag: false,
         };
-
         searchCurrentTile(result.nowY, result.nowX, nowField);
       }
     }
-
     return nowField;
   };
 
-  const checkTile = (nowField: TField) => {
-    let isValid = false;
-    let count = 0;
-
-    for (let i = 0; i < nowField.length - 1; i++) {
-      for (let j = 0; j < nowField[i].length - 1; j++) {
-        if (!nowField[i][j].isOpen) count++;
+  const resetFlag = (nowField: TField) => {
+    const newField = nowField;
+    for (let i = 0; i < newField.length - 1; i++) {
+      for (let l = 0; l < newField[i].length - 1; l++) {
+        if (newField[i][l].isFlag) {
+          newField[i][l] = {
+            value: newField[i][l].value,
+            isOpen: false,
+            isFlag: false,
+          };
+          props.addMineLeft();
+        }
       }
     }
-
-    if (count === props.countOfMine) isValid = true;
-
-    return isValid;
+    setFlagPosition((prev) => []);
+    return newField;
   };
 
-  const onClickTile = (position: TPosition, isOpen: boolean) => () => {
+  const isClearCheck = (nowField: TField) => {
+    let isValue = false;
+    let count = 0;
+    console.log("check", nowField);
+    for (let y = 0; y < nowField.length; y++) {
+      for (let x = 0; x < nowField[y].length; x++) {
+        if (nowField[y][x].isOpen) count++;
+      }
+    }
+    console.log(count, "count");
+    if (props.col * props.row - count === props.countOfMine) isValue = true;
+
+    return isValue;
+  };
+
+  const onClickLeftBtnOnTile = (position: TPosition, isOpen: boolean) => () => {
     const { yIndex, xIndex } = position;
-    const nowField = field;
-
-    nowField[yIndex][xIndex] = {
-      value: nowField[yIndex][xIndex].value,
-      isOpen: true,
-      isFlag: false,
-    };
-
+    let nowField = field;
+    if (isOpen) return;
+    if (field[yIndex][xIndex].isFlag) return;
     if (!props.isStart) {
       props.setIsStart(true);
+      nowField = resetFlag(nowField);
       setMines(yIndex, xIndex, nowField);
       setFieldValue();
+      nowField = searchCurrentTile(yIndex, xIndex, nowField);
+    } else {
+      if (field[yIndex][xIndex].value === MINE) endGame(nowField);
+      if (field[yIndex][xIndex].value === "0") {
+        nowField = searchCurrentTile(yIndex, xIndex, nowField);
+      } else {
+        nowField[yIndex][xIndex] = {
+          value: nowField[yIndex][xIndex].value,
+          isOpen: true,
+          isFlag: false,
+        };
+      }
     }
-
-    if (isOpen) return;
-
-    const newField = searchCurrentTile(yIndex, xIndex, nowField);
-    const checkResult = checkTile(nowField);
-
-    if (checkResult) endGame(nowField);
-    else setField([...newField]);
+    const check_result = isClearCheck(field);
+    if (check_result) clearGame();
+    else setField((prev) => [...nowField]);
   };
 
-  const onContextMenuTile =
+  const minusFlagPosition = (y: number, x: number) => {
+    const newPosition = flagPosition.filter((el) => el[0] + el[1] !== y + x);
+    return newPosition;
+  };
+
+  const onClickRightBtnOnTile =
     (x: number, y: number) => (e: MouseEvent<HTMLSpanElement>) => {
       e.preventDefault();
+      if (field[y][x].isOpen) return;
+
       const newField = field;
       if (!e.currentTarget.innerHTML) {
         newField[y][x] = {
@@ -228,7 +283,7 @@ const MineSweeper = (props: IPropsMineSweeper) => {
           isOpen: false,
           isFlag: true,
         };
-
+        setFlagPosition((prev) => [...prev, [y, x]]);
         props.minusMineLeft();
       } else {
         newField[y][x] = {
@@ -236,7 +291,8 @@ const MineSweeper = (props: IPropsMineSweeper) => {
           isOpen: false,
           isFlag: false,
         };
-
+        const newFlagPosition = minusFlagPosition(y, x);
+        setFlagPosition([...newFlagPosition]);
         props.addMineLeft();
       }
 
@@ -247,8 +303,9 @@ const MineSweeper = (props: IPropsMineSweeper) => {
     <MineSweeperUI
       field={field}
       isEnd={isEnd}
-      onClickTile={onClickTile}
-      onContextMenuTile={onContextMenuTile}
+      isClear={isClear}
+      onClickLeftBtnOnTile={onClickLeftBtnOnTile}
+      onClickRightBtnOnTile={onClickRightBtnOnTile}
     />
   );
 };
@@ -260,6 +317,7 @@ const mapStateToProps = (state: TMinesweeperState) => {
     restart: state.restart,
     nowLevel: state.level,
     isStart: state.isStart,
+    isClear: state.isClear,
     countOfMine: state.countOfMine,
     defaultField: state.field,
   };
@@ -268,6 +326,7 @@ const mapStateToProps = (state: TMinesweeperState) => {
 const mapDispatchToProps = (dispatch: AppDispatch) => {
   return {
     setIsStart: (isStart: boolean) => dispatch(setIsStart({ isStart })),
+    setIsClear: () => dispatch(setIsClear()),
     addMineLeft: () => dispatch(addMineLeft()),
     minusMineLeft: () => dispatch(minusMineLeft()),
   };
