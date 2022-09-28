@@ -4,20 +4,11 @@ import { createField } from "./createField";
 
 export const setLevelObject = (setLevel: string, restart: boolean) => {
   let setting: TMinesweeperState;
-  //   const nextState: TMinesweeperState = {
-  //     isStart,
-  //     level: level[setLevel].name,
-  //     col: level[setLevel].col,
-  //     row: level[setLevel].row,
-  //     countOfMine: level[setLevel].countOfMine,
-  //     mineLeft: level[setLevel].countOfMine,
-  //     field: createField(level[setLevel].col, level[setLevel].row),
-  //   };
-
   if (setLevel === level.beginner.name) setting = setBeginner(restart);
   else if (setLevel === level.intermediate.name)
     setting = setIntermediate(restart);
   else setting = setExpert(restart);
+
   return setting;
 };
 

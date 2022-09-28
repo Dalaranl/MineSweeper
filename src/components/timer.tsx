@@ -1,11 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
-import { TMinesweeperState } from "./MineSweeper.types";
-
-interface IPropsTimer {
-  isStart: boolean;
-  restart: boolean;
-}
+import { IPropsTimer, TMinesweeperState } from "./MineSweeper.types";
 
 const Timer = (props: IPropsTimer) => {
   const time = useRef(0);

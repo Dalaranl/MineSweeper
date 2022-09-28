@@ -37,18 +37,32 @@ const CustomModal = (props: IPropsCustomModal) => {
       </div>
       <div className="line_container">
         <span className="line_text">가로 : </span>
-        <input type="text" onChange={onChangeSetValues("row")} />
+        <input
+          className="modal_input"
+          type="text"
+          onChange={onChangeSetValues("row")}
+        />
       </div>
       <div className="line_container">
         <span className="line_text">세로 : </span>
-        <input type="text" onChange={onChangeSetValues("col")} />
+        <input
+          className="modal_input"
+          type="text"
+          onChange={onChangeSetValues("col")}
+        />
       </div>
       <div className="line_container">
         <span className="line_text">지뢰 : </span>
-        <input type="text" onChange={onChangeSetValues("countOfMind")} />
+        <input
+          className="modal_input"
+          type="text"
+          onChange={onChangeSetValues("countOfMind")}
+        />
       </div>
       <div className="button_container">
-        <button onClick={onClickCustomazing}>적용하기!</button>
+        <button className="modal_button" onClick={onClickCustomazing}>
+          적용하기!
+        </button>
       </div>
     </div>
   );

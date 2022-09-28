@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { AppDispatch, reStart, setCustomLevel, setLevel } from "../app/store";
+import { AppDispatch, reStart, setLevel } from "../app/store";
 import { level } from "../data/level";
 import { IPropsMSHeader, TMinesweeperState } from "./MineSweeper.types";
 import "./MineSweeper.css";
@@ -54,7 +54,7 @@ const MSHeader = (props: IPropsMSHeader) => {
               props.restart();
             }}
           >
-            <span>reset</span>
+            <span className="header_reset">reset</span>
           </div>
         </div>
         <div className="timer">

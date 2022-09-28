@@ -1,8 +1,8 @@
 export const level = {
   beginner: {
     name: "beginner",
-    col: 8,
-    row: 8,
+    col: 9,
+    row: 9,
     countOfMine: 10,
   },
   intermediate: {
@@ -14,8 +14,8 @@ export const level = {
   expert: {
     name: "expert",
     col: 16,
-    row: 32,
-    countOfMine: 98,
+    row: 30,
+    countOfMine: 99,
   },
   custom: {
     name: "custom",

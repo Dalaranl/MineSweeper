@@ -5,13 +5,12 @@ import "./MineSweeper.css";
 import { MINE } from "../data/level";
 
 const MineSweeperUI = (props: IPropsMineSweeperUI) => {
-  console.log("UI", props.isClear);
   return (
     <div>
       {props.isClear ? (
         <div className="minesweeper">
           <MSHeader />
-          <h1>축하합니다!</h1>
+          <h2>축하합니다! {props.gameLevel} 난이도를 클리어 하셨습니다!</h2>
         </div>
       ) : (
         <div className="minesweeper">

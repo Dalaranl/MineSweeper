@@ -7,7 +7,7 @@ export interface IPropsMineSweeper {
   isClear: boolean;
   countOfMine: number;
   defaultField: TField;
-  nowLevel: string;
+  gameLevel: string;
   restart: boolean;
   setIsStart: (isStart: boolean) => void;
   setIsClear: () => void;
@@ -19,6 +19,7 @@ export interface IPropsMineSweeperUI {
   field: TField;
   isEnd: string;
   isClear: boolean;
+  gameLevel: string;
   onClickLeftBtnOnTile: (
     position: { xIndex: number; yIndex: number },
     isOpen: boolean
@@ -49,6 +50,11 @@ export type TMinesweeperState = {
   mineLeft: number;
   field: TField;
 };
+
+export interface IPropsTimer {
+  isStart: boolean;
+  restart: boolean;
+}
 
 export type TField = TFieldObj[][];
 export type TFieldObj = { value: string; isOpen: boolean; isFlag: boolean };

@@ -42,6 +42,12 @@
   display: block;
   padding: 10px;
 }
+.level:hover {
+  cursor: pointer;
+}
+.header_reset:hover {
+  cursor: pointer;
+}
 
 .tile_container {
   display: flex;
@@ -66,12 +72,14 @@
   background-color: plum;
 }
 
+/* customModal_CSS */
 .modal_container {
   position: absolute;
   top: 50px;
   right: 20px;
   width: 296px;
   height: 396px;
+  padding: 15px;
   background-color: whitesmoke;
 }
 
@@ -108,4 +116,20 @@
 
 .line_text {
   font-size: 18px;
+}
+
+.modal_input {
+  margin-left: 10px;
+  border-radius: 5px;
+}
+.modal_button {
+  padding: 10px 15px;
+  border-radius: 10px;
+  background-color: cornflowerblue;
+  border: none;
+  color: #fff;
+}
+.modal_button:hover {
+  cursor: pointer;
+  background-color: deepskyblue;
 }
