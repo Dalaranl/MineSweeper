@@ -69,12 +69,12 @@ const MineSweeper = (props: IPropsMineSweeper) => {
     const { yIndex, xIndex } = position;
     let nowField = field;
     let newFlagPosition = flagPosition;
+    if (isOpen) return;
+    if (field[yIndex][xIndex].isFlag) return;
     nowField[yIndex][xIndex] = {
       ...nowField[yIndex][xIndex],
       isOpen: true,
     };
-    if (isOpen) return;
-    if (field[yIndex][xIndex].isFlag) return;
     if (!props.isStart) {
       props.setIsStart(true);
       nowField = resetFlag(nowField, props);

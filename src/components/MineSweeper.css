@@ -53,6 +53,10 @@
   display: flex;
 }
 
+.hover_ani:hover {
+  background-color: rgba(225, 225, 225, 0.8);
+}
+
 .tile {
   display: flex;
   justify-content: center;

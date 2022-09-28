@@ -24,7 +24,7 @@ const MineSweeperUI = (props: IPropsMineSweeperUI) => {
                       <>
                         {data.value === MINE ? (
                           <span
-                            className={`tile click ${props.isEnd}`}
+                            className={`tile click ${props.isEnd} hover_ani`}
                             onClick={props.onClickLeftBtnOnTile(
                               { xIndex, yIndex },
                               data.isOpen
@@ -56,7 +56,7 @@ const MineSweeperUI = (props: IPropsMineSweeperUI) => {
                       <>
                         {data.isFlag ? (
                           <span
-                            className="tile"
+                            className="tile hover_ani"
                             onClick={props.onClickLeftBtnOnTile(
                               { xIndex, yIndex },
                               data.isOpen
@@ -78,7 +78,7 @@ const MineSweeperUI = (props: IPropsMineSweeperUI) => {
                           </span>
                         ) : (
                           <span
-                            className="tile"
+                            className="tile hover_ani"
                             onClick={props.onClickLeftBtnOnTile(
                               { xIndex, yIndex },
                               data.isOpen
