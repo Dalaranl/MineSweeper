@@ -3,6 +3,7 @@
 # 소개
 
 React와 Redux를 이용한 지뢰찾기 게임입니다.
+</br>
 [플레이하기](https://dalaranl.github.io/MineSweeper/)
 
 # 기술 스택
