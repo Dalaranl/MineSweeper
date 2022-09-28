@@ -10,7 +10,7 @@ const Timer = (props: IPropsTimer) => {
     let timer: any;
     if (props.isStart) {
       timer = setInterval(() => {
-        setSec(String(time.current % 60).padStart(3, "0"));
+        setSec(String(time.current).padStart(3, "0"));
       }, 1000);
 
       time.current += 1;
