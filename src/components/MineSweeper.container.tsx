@@ -65,6 +65,7 @@ const MineSweeper = (props: IPropsMineSweeper) => {
     return nowField;
   };
 
+  // 좌클릭 이벤트
   const onClickLeftBtnOnTile = (position: TPosition, isOpen: boolean) => () => {
     const { yIndex, xIndex } = position;
     let nowField = field;
@@ -117,6 +118,7 @@ const MineSweeper = (props: IPropsMineSweeper) => {
     }
   };
 
+  // 우클릭 이벤트
   const onClickRightBtnOnTile =
     (x: number, y: number) => (e: MouseEvent<HTMLSpanElement>) => {
       e.preventDefault();
