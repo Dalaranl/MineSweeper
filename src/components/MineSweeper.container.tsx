@@ -166,6 +166,7 @@ const MineSweeper = (props: IPropsMineSweeper) => {
   );
 };
 
+// redux
 const mapStateToProps = (state: TMinesweeperState) => {
   return {
     col: state.col,
